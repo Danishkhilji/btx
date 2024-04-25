@@ -6,8 +6,7 @@ import { QueryClient, QueryClientProvider } from "react-query";
 import "@/styles/globals.css";
 //****Components****
 import Loader from "@/components/Shared/Loader";
-import Layout from "@/components/shared/Layout/index.jsx";
-
+import Layout from "../components/Shared/Layout/index.jsx";
 export default function App({ Component, pageProps: { ...pageProps } }) {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
