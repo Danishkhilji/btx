@@ -31,6 +31,12 @@ const Sidebar = ({ collapsed, setCollapsed }) => {
     { id: 5, text: "Notification", link: "/Notification", svg: HiOutlineBell },
   ];
 
+  const handleLogout = () => {
+    localStorage.removeItem('user');
+    localStorage.removeItem('token');
+    router.push('/auth');
+  };
+
   const Icon = collapsed
     ? HiOutlineChevronDoubleRight
     : HiOutlineChevronDoubleLeft;
@@ -111,7 +117,8 @@ const Sidebar = ({ collapsed, setCollapsed }) => {
                 <Link href="." className="color-white text-sm">
                   View Profile
                 </Link>
-                <button className="float-right">
+                <button className="float-right"
+                  onClick={handleLogout}>
                   <HiOutlineArrowRightOnRectangle
                     className="block sm:hidden xl:block w-6 h-5 ml-28"
                     fill={"#fff"}

@@ -16,11 +16,6 @@ const Login = () => {
   });
 
   const router = useRouter();
-  let loginData = {
-    email: "admin@gmail.com",
-    password: "admin"
-  }
-
 
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem('user'));
