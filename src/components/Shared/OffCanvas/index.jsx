@@ -17,7 +17,7 @@ import {
   HiOutlineBell
 } from "react-icons/hi2";
 //****Components****
-import MenuItems from "./MenuItems";
+import MenuItems from "./menuItems";
 
 //add NavItem prop to component prop
 const Sidebar = ({ collapsed, setCollapsed }) => {
