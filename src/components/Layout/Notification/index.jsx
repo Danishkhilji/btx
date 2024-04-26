@@ -1,10 +1,25 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { useMutation } from "react-query";
 import axios from "axios";
+import { useRouter } from "next/router";
+
+import Loader from "@/components/Shared/Loader";
 
 const Notification = () => {
     const [formData, setFormData] = useState({ name: '', message: '', image: null });
+    let Loading = true
+
+    const router = useRouter();
+
+    useEffect(() => {
+        const user = JSON.parse(localStorage.getItem('user'));
+        const token = localStorage.getItem('token');
+        if (!user || !token) {
+            router.push('/auth');
+        }
+    }, [])
+
 
     const addNotification = async (formData) => {
         console.log("formData", formData)

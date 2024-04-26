@@ -1,5 +1,6 @@
-import React from "react";
 
+import React, { memo, useEffect } from "react";
+import { useRouter } from "next/router";
 const CustomerCard = ({ name, unread }) => {
   return (
     <button class="flex flex-row items-center hover:bg-gray-100 rounded-xl p-2">
@@ -28,6 +29,16 @@ const ChatMessage = () => {
 };
 
 const Chat = () => {
+
+  const router = useRouter();
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem('user'));
+    const token = localStorage.getItem('token');
+    if (!user || !token) {
+      router.push('/auth');
+    }
+  }, [])
+
   return (
     <div className="h-screen bg-gradient-to-r from-rose-500 to-orange-500">
       <div class="flex h-screen antialiased text-gray-800">

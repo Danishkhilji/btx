@@ -1,27 +1,35 @@
 import { useRouter } from "next/router";
 import Link from 'next/link';
-
+import axios from "axios";
 
 import React from "react";
 import { Button } from "@/components/ui/button";
 
 import { useMutation } from "react-query";
+import { useEffect } from "react";
+
 
 const Login = () => {
   const [formData, setFormData] = React.useState({
     email: "",
     password: "",
   });
+
   const router = useRouter();
+  let loginData = {
+    email: "admin@gmail.com",
+    password: "admin"
+  }
 
-  const loginUser = async (formData) => {
-    const response = await axios.post(`https://wave-backend-zulg.onrender.com/admin-login`, formData, {
-      headers: {
-        'Content-Type': 'multipart/json'
-      }
-    });
 
-  };
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem('user'));
+    const token = localStorage.getItem('token');
+    if (user || token) {
+      router.push('/dashboard');
+    }
+  }, [])
+
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -31,32 +39,54 @@ const Login = () => {
     }));
   };
 
-  const {
-    mutate: authMutation,
-    isLoading,
-    isError,
-  } = useMutation(loginUser, {
-    onSuccess: (data) => {
-      if (data !== undefined) {
-
-        console.log("user logged in");
-      }
-    },
-    onError: (error) => {
-      console.error("Error editing profile:", error);
-    },
-  });
-
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     try {
-      await authMutation(formData);
-      router.push("/dashboard");
+      // Hardcoded email and password values for simulation
+      const hardcodedEmail = "admin@gmail.com";
+      const hardcodedPassword = "admin123";
 
+      // Check if the entered email and password match the hardcoded values
+      if (formData.email === hardcodedEmail && formData.password === hardcodedPassword) {
+        const dummyUser = {
+          id: 1,
+          name: "admin",
+          email: "admin@gmail.com",
+        };
+        const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2MmFiOWE4ZGMxYmJkNGVlNjdmYmE3NCIsImVtYWlsIjoiYWRtaW5AZ21haWwuY29tIiwidXNlcm5hbWUiOiJhZG1pbiIsImlhdCI6MTcxNDE1MTA4NywiZXhwIjoxNzE0MTU0Njg3fQ.0E06twUsI_uNHK4yKPPJKYAdwjfl0zVVoP2Oj6qc46g"
+        localStorage.setItem('user', JSON.stringify(dummyUser));
+        localStorage.setItem('token', token);
+        router.push("/dashboard");
+      } else {
+        alert("Invalid email or password");
+      }
     } catch (error) {
-      console.error("Error editing profile:", error);
+      console.error("Error logging in:", error);
     }
   };
+
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+  //   try {
+  //     console.log(loginData)
+  //     const response = await axios.post(`https://wave-backend-zulg.onrender.com/admin-login`, loginData, {
+  //       headers: {
+  //         'Content-Type': 'multipart/json'
+  //       }
+  //     });
+  //     console.log(response)
+  //     if (response.data.success) {
+  //       localStorage.setItem('user', JSON.stringify(response.data.user));
+  //       localStorage.setItem('token', JSON.stringify(response.data.user));
+  //       router.push("/dashboard");
+
+  //     }
+
+
+  //   } catch (error) {
+  //     console.error("Error editing profile:", error);
+  //   }
+  // };
 
   return (
     <div className="flex h-screen align-middle justify-center items-center bg-gradient-to-r from-rose-500 to-orange-500">
